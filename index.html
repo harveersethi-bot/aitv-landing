@@ -1,0 +1,529 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="AITV — The home of AI-generated content. Upload, discover, and share AI-made videos, images, music, and stories." />
+  <title>AITV — The Home of AI Creativity</title>
+
+  <style>
+    :root{
+      --bg: #070A12;
+      --panel: rgba(255,255,255,0.06);
+      --panel2: rgba(255,255,255,0.08);
+      --text: rgba(255,255,255,0.92);
+      --muted: rgba(255,255,255,0.65);
+      --hair: rgba(255,255,255,0.14);
+      --shadow: 0 18px 50px rgba(0,0,0,0.55);
+
+      --g1: #29D3FF;
+      --g2: #5B5CFF;
+      --g3: #C047FF;
+
+      --radius: 18px;
+      --radius2: 26px;
+    }
+
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color: var(--text);
+      background:
+        radial-gradient(900px 600px at 18% 12%, rgba(41,211,255,0.20), transparent 55%),
+        radial-gradient(700px 500px at 78% 18%, rgba(192,71,255,0.18), transparent 55%),
+        radial-gradient(900px 600px at 60% 85%, rgba(91,92,255,0.14), transparent 55%),
+        linear-gradient(180deg, #050710, #070A12 60%, #050710);
+      overflow-x:hidden;
+    }
+
+    .wrap{
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 22px 20px 60px;
+    }
+
+    /* Subtle animated grid */
+    .grid{
+      position:fixed;
+      inset:-2px;
+      pointer-events:none;
+      opacity:0.18;
+      background-image:
+        linear-gradient(to right, rgba(255,255,255,0.07) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255,255,255,0.07) 1px, transparent 1px);
+      background-size: 54px 54px;
+      mask-image: radial-gradient(60% 60% at 50% 20%, black 0%, transparent 70%);
+      animation: drift 18s linear infinite;
+    }
+    @keyframes drift{
+      from{ transform: translate3d(0,0,0); }
+      to{ transform: translate3d(-54px, -54px, 0); }
+    }
+
+    header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      padding: 10px 0 26px;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      text-decoration:none;
+      color:var(--text);
+    }
+
+    .mark{
+      width:38px; height:38px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--g1), var(--g2), var(--g3));
+      box-shadow: 0 12px 30px rgba(91,92,255,0.20);
+      position:relative;
+      overflow:hidden;
+    }
+    .mark:after{
+      content:"";
+      position:absolute;
+      inset:-40%;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.45), transparent 45%);
+      transform: rotate(20deg);
+    }
+
+    .brand-title{
+      display:flex;
+      flex-direction:column;
+      line-height:1.05;
+    }
+    .brand-title b{
+      font-size: 14px;
+      letter-spacing: 0.20em;
+      text-transform:uppercase;
+    }
+    .brand-title span{
+      font-size: 12px;
+      color:var(--muted);
+      margin-top:4px;
+    }
+
+    .top-actions{
+      display:flex;
+      gap:10px;
+      align-items:center;
+    }
+    .pill{
+      border: 1px solid var(--hair);
+      background: rgba(255,255,255,0.04);
+      color: var(--text);
+      padding: 10px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      transition: 160ms ease;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+    .pill:hover{ transform: translateY(-1px); border-color: rgba(255,255,255,0.22); }
+    .pill svg{ opacity:0.85; }
+
+    .hero{
+      display:grid;
+      grid-template-columns: 1.25fr 0.75fr;
+      gap: 20px;
+      align-items:stretch;
+    }
+    @media (max-width: 920px){
+      .hero{ grid-template-columns: 1fr; }
+    }
+
+    .card{
+      border: 1px solid rgba(255,255,255,0.10);
+      background: linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.03));
+      border-radius: var(--radius2);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      overflow:hidden;
+      position:relative;
+    }
+
+    .card .inner{
+      padding: 26px 24px 22px;
+    }
+
+    .kicker{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.04);
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 0.02em;
+      margin-bottom: 16px;
+    }
+    .dot{
+      width:8px; height:8px;
+      border-radius:50%;
+      background: linear-gradient(135deg, var(--g1), var(--g3));
+      box-shadow: 0 0 0 6px rgba(41,211,255,0.08);
+    }
+
+    h1{
+      margin: 0 0 12px;
+      font-size: 44px;
+      line-height: 1.02;
+      letter-spacing: -0.02em;
+    }
+    @media (max-width: 520px){
+      h1{ font-size: 36px; }
+    }
+
+    .lead{
+      margin: 0 0 18px;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.55;
+      max-width: 62ch;
+    }
+
+    .gradient{
+      background: linear-gradient(90deg, var(--g1), var(--g2), var(--g3));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .cta-row{
+      display:flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items:center;
+      margin-top: 16px;
+    }
+
+    .btn{
+      cursor:pointer;
+      border: 0;
+      padding: 12px 16px;
+      border-radius: 14px;
+      font-weight: 650;
+      font-size: 14px;
+      color: #0B0F1D;
+      background: linear-gradient(90deg, var(--g1), var(--g2), var(--g3));
+      box-shadow: 0 14px 34px rgba(91,92,255,0.22);
+      transition: 160ms ease;
+    }
+    .btn:hover{ transform: translateY(-1px); }
+    .btn:active{ transform: translateY(0px); }
+
+    .ghost{
+      border: 1px solid rgba(255,255,255,0.16);
+      background: rgba(255,255,255,0.04);
+      color: var(--text);
+      box-shadow: none;
+    }
+
+    form{
+      display:flex;
+      gap:10px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+    input[type="email"]{
+      flex: 1 1 240px;
+      min-width: 220px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.04);
+      color: var(--text);
+      outline:none;
+    }
+    input[type="email"]::placeholder{ color: rgba(255,255,255,0.40); }
+
+    .fine{
+      margin-top: 10px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.52);
+    }
+
+    /* Right side: features */
+    .side{
+      display:flex;
+      flex-direction:column;
+      gap: 14px;
+    }
+
+    .feature{
+      padding: 18px 18px;
+      border-radius: var(--radius);
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.03);
+    }
+    .feature b{
+      display:block;
+      margin-bottom: 6px;
+      font-size: 14px;
+      letter-spacing: -0.01em;
+    }
+    .feature p{
+      margin:0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .section{
+      margin-top: 18px;
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+    @media (max-width: 920px){
+      .section{ grid-template-columns: 1fr; }
+    }
+
+    .tile{
+      padding: 18px 18px;
+      border-radius: var(--radius);
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.03);
+      min-height: 120px;
+    }
+    .tile .icon{
+      width: 34px; height: 34px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.06);
+      display:grid;
+      place-items:center;
+      border: 1px solid rgba(255,255,255,0.10);
+      margin-bottom: 10px;
+    }
+    .tile b{ display:block; margin-bottom: 6px; }
+    .tile p{ margin:0; color: var(--muted); font-size: 13px; line-height: 1.45; }
+
+    footer{
+      margin-top: 34px;
+      padding-top: 18px;
+      border-top: 1px solid rgba(255,255,255,0.10);
+      color: rgba(255,255,255,0.55);
+      font-size: 12px;
+      display:flex;
+      justify-content:space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    /* Small badge */
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.03);
+      color: rgba(255,255,255,0.70);
+      font-size: 12px;
+    }
+    .badge strong{ color: rgba(255,255,255,0.92); }
+
+    /* Modal-ish success message */
+    .toast{
+      position: fixed;
+      left: 50%;
+      bottom: 18px;
+      transform: translateX(-50%);
+      background: rgba(10,12,22,0.92);
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 14px;
+      padding: 12px 14px;
+      color: rgba(255,255,255,0.86);
+      font-size: 13px;
+      box-shadow: 0 18px 50px rgba(0,0,0,0.55);
+      opacity: 0;
+      pointer-events:none;
+      transition: 220ms ease;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      max-width: calc(100vw - 24px);
+    }
+    .toast.show{ opacity: 1; transform: translateX(-50%) translateY(-6px); }
+  </style>
+</head>
+
+<body>
+  <div class="grid" aria-hidden="true"></div>
+
+  <div class="wrap">
+    <header>
+      <a class="brand" href="/" aria-label="AITV home">
+        <div class="mark" aria-hidden="true"></div>
+        <div class="brand-title">
+          <b>AITV</b>
+          <span>ouraitv.com</span>
+        </div>
+      </a>
+
+      <div class="top-actions">
+        <a class="pill" href="#waitlist">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M4 12c0-4.418 3.582-8 8-8s8 3.582 8 8-3.582 8-8 8-8-3.582-8-8Z" stroke="currentColor" opacity="0.9" stroke-width="1.7"/>
+            <path d="M12 7v6l4 2" stroke="currentColor" opacity="0.9" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Early access
+        </a>
+        <a class="pill" href="#about">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 22s7-4.35 7-11a7 7 0 1 0-14 0c0 6.65 7 11 7 11Z" stroke="currentColor" opacity="0.9" stroke-width="1.7"/>
+            <path d="M12 11.5a2.2 2.2 0 1 0 0-4.4 2.2 2.2 0 0 0 0 4.4Z" stroke="currentColor" opacity="0.9" stroke-width="1.7"/>
+          </svg>
+          What is AITV
+        </a>
+      </div>
+    </header>
+
+    <main class="hero">
+      <section class="card">
+        <div class="inner">
+          <div class="kicker">
+            <span class="dot" aria-hidden="true"></span>
+            AI-only platform • Launching soon
+          </div>
+
+          <h1>
+            The <span class="gradient">home</span> of AI-generated content.
+          </h1>
+
+          <p class="lead" id="about">
+            AITV is a platform where creators upload and discover content made with AI — videos, images, music, and stories.
+            Built for the new creator era: AI-first, creator-led, and community-driven.
+          </p>
+
+          <div class="badge" aria-label="Founding creators badge">
+            <strong>Founding Creator</strong> perks for early members
+          </div>
+
+          <div class="cta-row" id="waitlist">
+            <form id="waitlistForm" autocomplete="on">
+              <input id="email" name="email" type="email" placeholder="Enter your email for early access" required />
+              <button class="btn" type="submit">Join Early Access</button>
+              <button class="btn ghost" type="button" id="copyLinkBtn">Copy link</button>
+            </form>
+            <div class="fine">
+              No spam. Just launch updates and early creator invites.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <aside class="side">
+        <div class="feature card" style="box-shadow:none;">
+          <div class="inner" style="padding:18px 18px;">
+            <b>AI tool tagging</b>
+            <p>Runway • Midjourney • Sora • Pika • ChatGPT • Suno • Udio • Stable Diffusion — and more.</p>
+          </div>
+        </div>
+
+        <div class="feature">
+          <b>Weekly creator challenges</b>
+          <p>Get featured, build a following, and push the limits of what AI can create.</p>
+        </div>
+
+        <div class="feature">
+          <b>Clean discovery</b>
+          <p>AI-first feeds and filters so the best AI content isn’t buried or misunderstood.</p>
+        </div>
+
+        <div class="feature">
+          <b>Built for global creators</b>
+          <p>Fast, lightweight, and designed to scale into the world’s AI creativity hub.</p>
+        </div>
+      </aside>
+    </main>
+
+    <section class="section" aria-label="Highlights">
+      <div class="tile">
+        <div class="icon" aria-hidden="true">🎬</div>
+        <b>AI video</b>
+        <p>Short films, reels, animations, trailers — created with AI tools and shared in one place.</p>
+      </div>
+
+      <div class="tile">
+        <div class="icon" aria-hidden="true">🖼️</div>
+        <b>AI images</b>
+        <p>Art, design, moodboards, concept frames — discover creators and styles fast.</p>
+      </div>
+
+      <div class="tile">
+        <div class="icon" aria-hidden="true">🎵</div>
+        <b>AI audio & stories</b>
+        <p>Music, voice, scripts, and writing — showcase your AI-crafted worlds.</p>
+      </div>
+    </section>
+
+    <footer>
+      <div>© <span id="year"></span> AITV • ouraitv.com</div>
+      <div>Contact: <a href="mailto:hello@ouraitv.com" style="color:rgba(255,255,255,0.78);text-decoration:none;">hello@ouraitv.com</a></div>
+    </footer>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    // Set year
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    // Simple no-backend form handler:
+    // - Shows a success message
+    // - Copies the email to clipboard (optional)
+    // - You can replace this with Mailchimp/ConvertKit later
+    const form = document.getElementById("waitlistForm");
+    const email = document.getElementById("email");
+    const toast = document.getElementById("toast");
+    const copyBtn = document.getElementById("copyLinkBtn");
+
+    function showToast(msg){
+      toast.textContent = msg;
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 2600);
+    }
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const val = (email.value || "").trim();
+      if(!val) return;
+
+      // You can wire this to your email platform later.
+      // For now it just confirms to the user.
+      showToast("✅ You’re on the early access list. See you soon.");
+
+      try {
+        await navigator.clipboard.writeText(val);
+      } catch (_) { /* ignore */ }
+
+      form.reset();
+    });
+
+    copyBtn.addEventListener("click", async () => {
+      const url = window.location.href;
+      try{
+        await navigator.clipboard.writeText(url);
+        showToast("🔗 Link copied.");
+      }catch(e){
+        showToast("Couldn’t copy link. Please copy from the address bar.");
+      }
+    });
+  </script>
+</body>
+</html>
